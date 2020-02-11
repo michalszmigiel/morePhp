@@ -1,9 +1,6 @@
 <?php
-$db_connection = mysqli_connect('localhost','root','','pizza_db');
-if(!$db_connection)
-{
-    echo "Connection error: " .mysqli_connect_error();
-}
+
+require 'config/db_connection.php';
 
 $sql = "SELECT title, ingredients, id FROM pizzas ORDER BY created_at";
 
@@ -29,7 +26,11 @@ require 'templates/header.php'; ?>
                     <div class="card z-depth-0">
                         <div class="card-content center">
                             <h6><?=htmlspecialchars($pizza['title']);?></h6>
-                            <div><?=htmlspecialchars($pizza['ingredients']);?></div>
+                            <ul>
+                                <?php foreach (explode(", ", $pizza['ingredients']) as $ingredient): ?>
+                                <li><?= htmlspecialchars($ingredient);?></li>
+                                <?php endforeach;?>
+                            </ul>
                         </div>
                         <div class="card-action right-align">
                             <a href="/" class="brand-text">More info</a>
@@ -37,6 +38,9 @@ require 'templates/header.php'; ?>
                     </div>
                 </div>
             <?php endforeach; ?>
+        </div>
+        <div>
+            <?= count($pizzas) >= 3 ? "There are 3 or more pizzas." : "There are less than 3 pizzas." ;?>
         </div>
     </div>
 
